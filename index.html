@@ -21,37 +21,11 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      background: linear-gradient(135deg, #d4fcd6, #b6e3b5, #a4d4a3, #c8f5c9);
-      position: relative;
+      background: linear-gradient(to bottom right, #ffffff, #e7f0ec);
       overflow: hidden;
+      position: relative;
       color: #000;
       text-align: center;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      background-image:
-        url('https://i.postimg.cc/SRQ1XYD8/images-1-4.png'),
-        url('https://i.postimg.cc/SRQ1XYD8/images-1-4.png'),
-        url('https://i.postimg.cc/SRQ1XYD8/images-1-4.png'),
-        url('https://i.postimg.cc/SRQ1XYD8/images-1-4.png'),
-        url('https://i.postimg.cc/SRQ1XYD8/images-1-4.png');
-      background-repeat: no-repeat;
-      background-position:
-        10% 15%,
-        50% 5%,
-        80% 30%,
-        25% 70%,
-        75% 75%;
-      background-size: 40px 40px;
-      opacity: 0.3;
-      z-index: 0;
     }
 
     .creditos {
@@ -91,6 +65,43 @@
       position: relative;
       z-index: 2;
     }
+
+    /* Corações flutuando */
+    .hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .heart {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-image: url('heart.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      animation: floatHeart 10s linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes floatHeart {
+      0% {
+        transform: translateY(100vh) scale(0.8);
+        opacity: 0;
+      }
+      30% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1.2);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
@@ -98,6 +109,7 @@
   <img class="colecao" src="https://i.postimg.cc/nr7VpNDw/file-00000000057061f9bb5938189351d6c4-1.png" alt="Imagem Coleção Deus" />
   <div class="frase" id="frase">Carregando frase...</div>
   <img class="logo" src="https://i.postimg.cc/7LWQCZjQ/Logo-Alta-Resolu-o-1.png" alt="Logo MugShopp" />
+  <div class="hearts" id="hearts"></div>
 
   <script>
     async function carregarFrase() {
@@ -119,6 +131,17 @@
       }
     }
     carregarFrase();
+
+    // Criar corações
+    function criarCoracao() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = 6 + Math.random() * 4 + 's';
+      document.getElementById('hearts').appendChild(heart);
+      setTimeout(() => heart.remove(), 12000);
+    }
+    setInterval(criarCoracao, 350);
   </script>
 </body>
 </html>
