@@ -3,70 +3,122 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Expansão da Consciência</title>
+  <titleDeus: A força maior</title>
   <style>
+    @font-face {
+      font-family: 'Ahkio';
+      src: url('./fonts/Ahkio-Regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
     body {
       margin: 0;
-      padding: 0;
-      height: 100vh;
-      overflow: hidden;
-      background: linear-gradient(to bottom, #ffffff, #f1f1f1); /* Degradê branco para gelo (sem azul) */
+      padding: 20px;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ffe4e1, #e6e6fa, #e0ffff, #fffacd);
       position: relative;
-      font-family: sans-serif;
+      overflow: hidden;
+      color: #000;
+      text-align: center;
     }
 
-    #hearts {
-      position: absolute;
+    body::before {
+      content: "";
+      position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       pointer-events: none;
-      z-index: 1;
+      background-image:
+        url('https://i.postimg.cc/SRQ1XYD8/images-1-4.png'),
+        url('https://i.postimg.cc/SRQ1XYD8/images-1-4.png'),
+        url('https://i.postimg.cc/SRQ1XYD8/images-1-4.png'),
+        url('https://i.postimg.cc/SRQ1XYD8/images-1-4.png'),
+        url('https://i.postimg.cc/SRQ1XYD8/images-1-4.png');
+      background-repeat: no-repeat;
+      background-position:
+        10% 15%,
+        50% 5%,
+        80% 30%,
+        25% 70%,
+        75% 75%;
+      background-size: 40px 40px;
+      opacity: 0.3;
+      z-index: 0;
     }
 
-    .heart {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background-color: pink;
-      clip-path: polygon(50% 0%, 61% 12%, 75% 12%, 88% 25%, 88% 38%, 50% 75%, 12% 38%, 12% 25%, 25% 12%, 39% 12%);
-      opacity: 0.8;
-      animation: flutuar linear infinite;
+    .creditos {
+      font-size: 14px;
+      margin-bottom: 12px;
+      color: #222;
+      font-weight: bold;
+      position: relative;
+      z-index: 2;
     }
 
-    @keyframes flutuar {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-100vh) scale(1.2);
-        opacity: 0;
-      }
+    .colecao {
+      width: 170px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .frase {
+      font-family: 'Ahkio', cursive, sans-serif;
+      font-size: 28px;
+      font-weight: 500;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.85);
+      border-radius: 12px;
+      max-width: 90%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo {
+      width: 180px;
+      opacity: 1;
+      margin-top: 0;
+      position: relative;
+      z-index: 2;
     }
   </style>
 </head>
 <body>
-  <div id="hearts"></div>
+  <div class="creditos">Feito por MugShopp - Presentes Personalizados</div>
+  <img class="colecao" src="https://i.postimg.cc/nr7VpNDw/file-00000000057061f9bb5938189351d6c4-1.png" alt="Imagem Coleção Espiritual" />
+  <div class="frase" id="frase">Carregando frase...</div>
+  <img class="logo" src="https://i.postimg.cc/7LWQCZjQ/Logo-Alta-Resolu-o-1.png" alt="Logo MugShopp" />
 
   <script>
-    function carregarFrase() {
-      // função exemplo, se tiver outras coisas aqui, mantenha
+    async function carregarFrase() {
+      try {
+        const response = await fetch('deus.txt');
+        if (!response.ok) throw new Error('Arquivo deus.txt não encontrado');
+        const texto = await response.text();
+        const frases = texto.split('\n').filter(l => l.trim() !== '');
+        const hoje = new Date();
+        const inicio = new Date(hoje.getFullYear(), 0, 1); // 1º de janeiro
+        const diff = hoje - inicio;
+        const umDia = 1000 * 60 * 60 * 24;
+        const diaDoAno = Math.floor(diff / umDia);
+        const frase = frases[diaDoAno % frases.length];
+        document.getElementById('frase').textContent = `"${frase}"`;
+      } catch (e) {
+        document.getElementById('frase').textContent = 'Erro ao carregar a frase do dia.';
+        console.error(e);
+      }
     }
-
     carregarFrase();
-
-    function criarCoracao() {
-      const heart = document.createElement('div');
-      heart.classList.add('heart');
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.animationDuration = (6 + Math.random() * 4) + 's';
-      document.getElementById('hearts').appendChild(heart);
-      setTimeout(() => heart.remove(), 12000);
-    }
-
-    setInterval(criarCoracao, 350);
   </script>
 </body>
 </html>
